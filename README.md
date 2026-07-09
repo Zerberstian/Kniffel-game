@@ -5,11 +5,11 @@ Projektmanagement / Vertiefung Objektorientierte Programmierung.
 
 - **Programmiersprache:** Python 3.11+
 - **GUI:** Tkinter (Python-Standardbibliothek, keine externe Abhängigkeit nötig)
-- **Architektur:** Logik -  Konnektor und GUI, strikt getrennt
+- **Architektur:** Logik - Konnektor und GUI, strikt getrennt
 
 ## Ordnerstruktur
 
-```
+```text
 Kniffel-game/
 ├── README.md
 ├── docs/                           Projektmanagement- & Prüfungs-Dokumentation
@@ -22,9 +22,9 @@ Kniffel-game/
 │       ├── game/                   Spiellogik – keine GUI, rein objektorientiert
 │       │   ├── dice.py             Dice, DiceCup
 │       │   ├── category.py         ScoreCategory-Hierarchie (eine Klasse je Kniffel-Kategorie)
-│       │   ├── scorecard.py        ScoreCard (Punktetabelle eines Spielers)
-│       │   ├── player.py           Player
-│       │   └── game.py             Game (Rundensteuerung, Spielerwechsel, Spielende)
+│       │   ├── scorecard.py        Punktetabelle eines Spielers
+│       │   ├── player.py           Spielersteuerung
+│       │   └── game.py             Rundensteuerung, Spielerwechsel, Spielende
 │       ├── connector/              Verbindung zwischen Game und GUI
 │       │   └── game_connector.py
 │       └── gui/                    Reine Tkinteransicht, enthält keine Spiellogik
@@ -37,11 +37,8 @@ Kniffel-game/
     └── test_game.py
 ```
 
-
 ## Dokumentation
 
 Die Projektmanagement-Artefakte (Projektdefinition, Machbarkeitsanalyse,
 Projektstrukturplan, GANTT, Risikoanalyse, Klassendiagramm) liegen in
 `docs/`.
-
-
