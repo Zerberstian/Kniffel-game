@@ -3,8 +3,11 @@ import sys
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+_TESTS_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(_TESTS_DIR.parent / "src"))
+sys.path.insert(0, str(_TESTS_DIR))
 
+from _support import configure_logging
 from kniffel.game.dice import (     # Der Python-Language Server-Error kann ignoriert werden -> ["Import "kniffel.game.dice" could not be resolved"]
     DICE_PER_CUP,
     MAX_VALUE,
@@ -17,26 +20,8 @@ from kniffel.game.dice import (     # Der Python-Language Server-Error kann igno
 logger = logging.getLogger(__name__)
 
 
-class _ColorFormatter(logging.Formatter):
-    _COLORS = {
-        logging.DEBUG: "\033[90m",
-        logging.INFO: "\033[36m",
-        logging.WARNING: "\033[33m",
-        logging.ERROR: "\033[31m",
-    }
-    _RESET = "\033[0m"
-
-    def format(self, record: logging.LogRecord) -> str:
-        text = super().format(record)
-        color = self._COLORS.get(record.levelno, "")
-        return f"{color}{text}{self._RESET}" if color else text
-
-
 def setUpModule() -> None:
-    handler = logging.StreamHandler()
-    formatter_cls = _ColorFormatter if handler.stream.isatty() else logging.Formatter
-    handler.setFormatter(formatter_cls("%(levelname)s %(funcName)s: %(message)s"))
-    logging.basicConfig(level=logging.INFO, handlers=[handler], force=True)
+    configure_logging()
 
 
 class DiceTest(unittest.TestCase):
