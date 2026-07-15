@@ -34,6 +34,7 @@ Kniffel-game/
 └── tests/                          Einzelne Unit-Tests für game/ (laufen ohne GUI)
     ├── test_dice.py
     ├── test_category.py
+    ├── test_diceview.py
     └── test_game.py
 ```
 
