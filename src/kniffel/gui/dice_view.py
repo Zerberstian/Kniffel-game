@@ -5,5 +5,6 @@ class DiceView:
         self.master = master
         self.diceId = diceId
 
-    
+    def createDice():
+        pass
 
