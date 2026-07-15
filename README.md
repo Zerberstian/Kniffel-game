@@ -12,6 +12,8 @@ Projektmanagement / Vertiefung Objektorientierte Programmierung.
 ```text
 Kniffel-game/
 ├── README.md
+├── pyproject.toml                  Package-Metadaten, editable install (src-Layout)
+├── requirements.txt                Abhängigkeiten die installiert werden müssen
 ├── docs/                           Projektmanagement- & Prüfungs-Dokumentation
 │   ├── management/                 Projektdefinition, Machbarkeits- und Risikoanalyse, Terminplan (GANTT)
 │   └── diagrams/                   Klassendiagramm
@@ -22,7 +24,7 @@ Kniffel-game/
 │       ├── game/                   Spiellogik – keine GUI, rein objektorientiert
 │       │   ├── dice.py             Dice, DiceCup
 │       │   ├── category.py         ScoreCategory-Hierarchie (eine Klasse je Kniffel-Kategorie)
-│       │   ├── scorecard.py        Punktetabelle eines Spielers
+│       │   ├── score_card.py       Punktetabelle eines Spielers
 │       │   ├── player.py           Spielersteuerung
 │       │   └── game.py             Rundensteuerung, Spielerwechsel, Spielende
 │       ├── connector/              Verbindung zwischen Game und GUI
@@ -32,10 +34,32 @@ Kniffel-game/
 │           ├── dice_view.py        Würfelfeld
 │           └── scorecard_view.py   Score-Karte
 └── tests/                          Einzelne Unit-Tests für game/ (laufen ohne GUI)
+    ├── _support.py                 Gemeinsames Logging-Setup für Tests
     ├── test_dice.py
-    ├── test_category.py
-    ├── test_diceview.py
+    ...
     └── test_game.py
+```
+
+## Setup
+
+```bash
+git clone https://github.com/Zerberstian/Kniffel-game.git
+cd Kniffel-game
+python -m venv .venv
+.venv\Scripts\activate        # Linux: source .venv/bin/activate
+pip install -r requirements.txt
+pip install -e .
+```
+
+Das Package wird per `pip install -e .` (editable install, siehe
+`pyproject.toml`) installiert. Dadurch ist `kniffel` überall importierbar.
+
+## Tests
+
+laufen mit:
+
+```bash
+pytest tests
 ```
 
 ## Dokumentation

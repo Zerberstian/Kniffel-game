@@ -1,6 +1,9 @@
-src/kniffel/__pycache__/__init__.cpython-314.pyc
-src/kniffel/game/__pycache__/__init__.cpython-314.pyc
-src/kniffel/game/__pycache__/dice.cpython-314.pyc
-tests/__pycache__/test_dice.cpython-314.pyc
-src/kniffel/game/__pycache__/category.cpython-314.pyc
-tests/__pycache__/_support.cpython-314.pyc
+__pycache__/
+*.pyc
+
+# Setup-Artefakte (venv, editable install, pytest cache)
+.venv/
+*.egg-info/
+.pytest_cache/
+src/kniffel/game/score_card.py
+tests/test_score_card.py

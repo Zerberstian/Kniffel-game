@@ -1,11 +1,5 @@
 import logging
-import sys
 import unittest
-from pathlib import Path
-
-_TESTS_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(_TESTS_DIR.parent / "src"))
-sys.path.insert(0, str(_TESTS_DIR))
 
 from _support import configure_logging
 from kniffel.game.dice import (     # Der Python-Language Server-Error kann ignoriert werden -> ["Import "kniffel.game.dice" could not be resolved"]
