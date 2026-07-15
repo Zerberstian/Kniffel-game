@@ -2,7 +2,7 @@ import logging
 import unittest
 
 from _support import configure_logging
-from kniffel.game.dice import (     # Der Python-Language Server-Error kann ignoriert werden -> ["Import "kniffel.game.dice" could not be resolved"]
+from kniffel.game.dice import (
     DICE_PER_CUP,
     MAX_VALUE,
     MIN_VALUE,
