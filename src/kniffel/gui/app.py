@@ -21,4 +21,11 @@ placeholder_reroll_btw = tkinter.Frame(root, width=80, height=40)
 placeholder_reroll_btw.configure(bg="lightgreen")  # Set the background color of the frame
 placeholder_reroll_btw.place(x=520, y=260)  # Position the frame at the top-left corner
 
+with open("Kniffel-game/src/kniffel/gui/regeln.txt", "r") as file:
+    rules_text = file.read()
+
+text_widget = tkinter.Text(placeholder_regeln, width=70, height=15)
+text_widget.pack()
+text_widget.insert(tkinter.END, rules_text)
+
 root.mainloop()

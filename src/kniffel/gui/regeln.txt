@@ -1,0 +1,108 @@
+Spielregeln Kniffel
+
+Würfel : 5 Würfel
+
+Ziel :  Ziel des Spiels ist es, eine möglichst hohe Gesamtpunktzahl zu erzielen.
+
+Das Spiel
+
+Das Spiel besteht aus 13 Runden und jeder Spieler darf dreimal pro Zug würfeln. Beim ersten Wurf werden alle 5 Würfel geworfen; beim zweiten und dritten Mal kann mit einer beliebigen Anzahl von Würfeln weitergespielt werden, während die anderen Würfel auf dem Tisch liegen bleiben. Es besteht aber auch die Möglichkeit, das Ergebnis der geworfenen Würfel nach dem ersten, zweiten oder dritten Wurf anzunehmen und im Spielzettel einzutragen.
+
+ Spielzettel
+
+Spiel
+	
+
+Punkte
+	
+
+Anmerkungen
+
+Einer
+	 	
+
+Nur Einer zählen
+
+Zweier
+	 	
+
+Nur Zweier zählen
+
+Dreier
+	 	
+
+Nur Dreier zählen
+
+Vierer
+	 	
+
+Nur Vierer zählen
+
+Fünfer
+	 	
+
+Nur Fünfer zählen
+
+Sechser
+	 	
+
+Nur Sechser zählen
+
+Summe oben
+	 	 
+
+Bonus
+	 	
+
+35 Punkte, wenn oben mindestens 63 Punkte
+
+Dreierpasch
+	 	
+
+Drei gleiche Würfel : Alle Augen zählen
+
+Viererpasch
+	 	
+
+Vier gleiche Würfel : Alle Augen zählen
+
+Full House
+	 	
+
+Drei gleiche und zwei gleiche Würfel : 25 Punkte
+
+Kleine Straße
+	 	
+
+1 2 3 4, 2 3 4 5, oder 3 4 5 6 : 30 Punkte
+
+Große Straße
+	 	
+
+1 2 3 4 5 oder 2 3 4 5 6 : 40 Punkte
+
+Kniffel
+	 	
+
+Fünf gleiche Würfel : 50 Punkte
+
+Chance
+	 	
+
+Alle Augen zählen
+
+Summeunten
+	 	 
+
+Gesamtsumme
+	 	
+
+Oben + Bonus + Unten
+
+Nach dem dritten Wurf muss man sich für ein freies Feld auf dem Spielzettel entscheiden, welches nun mit dem Ergebnis dieses Wurfes bewertet wird.
+
+Wenn man ein Ergebnis in ein Feld einträgt, bei dem die Bedingung nicht erfüllt ist, dann wird das Feld gestrichen oder die Punktzahl „0“ eingetragen.
+
+Spielende
+
+Wenn der Spielzettel voll ist, so ist das Spiel beendet und die Punkte werden zusammengezählt. Es gewinnt der Spieler mit den meisten Punkten.
