@@ -9,36 +9,38 @@ Projektmanagement / Vertiefung Objektorientierte Programmierung.
 
 ## Ordnerstruktur
 
-```text
+<pre>
 Kniffel-game/
 ├── README.md
 ├── pyproject.toml                  Package-Metadaten, editable install (src-Layout)
 ├── requirements.txt                Abhängigkeiten die installiert werden müssen
-├── docs/                           Projektmanagement- & Prüfungs-Dokumentation
-│   ├── management/                 Projektdefinition, Machbarkeits- und Risikoanalyse, Terminplan (GANTT)
-│   └── diagrams/                   Klassendiagramm
+├── <span style="color:#CB65F0">docs/</span>                           <span style="color:#CB65F0">Projektmanagement- &amp; Prüfungs-Dokumentation</span>
+│   ├── <span style="color:#CB65F0">management/</span>                 <span style="color:#CB65F0">Projektdefinition, Machbarkeits- und Risikoanalyse, Terminplan (GANTT)</span>
+│   └── <span style="color:#CB65F0">diagrams/</span>                   <span style="color:#CB65F0">Klassendiagramm</span>
 ├── src/
 │   └── kniffel/
 │       ├── __init__.py
 │       ├── __main__.py             Entrypoint: python -m kniffel Ausführung
-│       ├── game/                   Spiellogik – keine GUI, rein objektorientiert
-│       │   ├── dice.py             Dice, DiceCup
-│       │   ├── category.py         ScoreCategory-Hierarchie (eine Klasse je Kniffel-Kategorie)
-│       │   ├── score_card.py       Punktetabelle eines Spielers
-│       │   ├── player.py           Spielersteuerung
-│       │   └── game.py             Rundensteuerung, Spielerwechsel, Spielende
-│       ├── connector/              Verbindung zwischen Game und GUI
-│       │   └── game_connector.py
-│       └── gui/                    Reine Tkinteransicht, enthält keine Spiellogik
-│           ├── app.py              Hauptfenster
-│           ├── dice_view.py        Würfelfeld
-│           └── scorecard_view.py   Score-Karte
-└── tests/                          Einzelne Unit-Tests für game/ (laufen ohne GUI)
-    ├── _support.py                 Gemeinsames Logging-Setup für Tests
-    ├── test_dice.py
-    ...
-    └── test_game.py
-```
+│       ├── <span style="color:#30E864">game/</span>                   <span style="color:#30E864">Spiellogik – keine GUI, rein objektorientiert</span>
+│       │   ├── <span style="color:#30E864">dice.py</span>             <span style="color:#30E864">Dice, DiceCup</span>
+│       │   ├── <span style="color:#30E864">category.py</span>         <span style="color:#30E864">ScoreCategory-Hierarchie (eine Klasse je Kniffel-Kategorie)</span>
+│       │   ├── <span style="color:#30E864">score_card.py</span>       <span style="color:#30E864">Punktetabelle eines Spielers</span>
+│       │   ├── <span style="color:#30E864">player.py</span>           <span style="color:#30E864">Spielersteuerung</span>
+│       │   └── <span style="color:#30E864">game.py</span>             <span style="color:#30E864">Rundensteuerung, Spielerwechsel, Spielende</span>
+│       ├── <span style="color:#E09F00">connector/</span>              <span style="color:#E09F00">Verbindung zwischen Game und GUI</span>
+│       │   └── <span style="color:#E09F00">game_connector.py</span>
+│       └── <span style="color:#ED47AA">gui/</span>                    <span style="color:#ED47AA">Reine Tkinteransicht, enthält keine Spiellogik</span>
+│           ├── <span style="color:#ED47AA">app.py</span>              <span style="color:#ED47AA">Hauptfenster</span>
+│           ├── <span style="color:#ED47AA">dice_view.py</span>        <span style="color:#ED47AA">Würfelfeld</span>
+│           └── <span style="color:#ED47AA">scorecard_view.py</span>   <span style="color:#ED47AA">Score-Karte</span>
+└── <span style="color:#42B8FA">tests/</span>                          <span style="color:#42B8FA">Einzelne Unit-Tests für game/ (laufen ohne GUI)</span>
+    ├── <span style="color:#42B8FA">_support.py</span>                 <span style="color:#42B8FA">Gemeinsames Logging-Setup für Tests</span>
+    ├── <span style="color:#42B8FA">test_dice.py</span>
+    ├── <span style="color:#42B8FA">test_category.py</span>
+    ├── <span style="color:#42B8FA">test_score_card.py</span>
+    ├── <span style="color:#42B8FA">test_diceview.py</span>
+    └── <span style="color:#42B8FA">test_game.py</span>
+</pre>
 
 ## Setup
 
