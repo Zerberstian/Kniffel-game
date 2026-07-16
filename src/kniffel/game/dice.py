@@ -13,9 +13,10 @@ ROLLS_PER_TURN = 3
 class Dice:
     """Ein einzelner Würfel mit Wert und Halten-Zustand."""
 
-    def __init__(self) -> None:
+    def __init__(self, dice_id: int) -> None:
         self._value: int = MIN_VALUE
         self._held: bool = False
+        self.dice_id = dice_id
 
     @property
     def value(self) -> int:
@@ -39,12 +40,16 @@ class DiceCup:
     """Becher mit 5 Würfeln, verwaltet die Würfe pro Zug."""
 
     def __init__(self) -> None:
-        self._dice: List[Dice] = [Dice() for _ in range(DICE_PER_CUP)]
+        self._dice: List[Dice] = [Dice(i) for i in range(DICE_PER_CUP)]
         self._rolls_left: int = ROLLS_PER_TURN
 
     @property
     def rolls_left(self) -> int:
         return self._rolls_left
+
+    @property
+    def dice(self) -> List[Dice]:
+        return list(self._dice)
 
     def roll_all(self) -> None:
         self._consume_roll()

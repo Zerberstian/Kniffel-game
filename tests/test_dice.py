@@ -20,13 +20,13 @@ def setUpModule() -> None:
 
 class DiceTest(unittest.TestCase):
     def test_initial_state(self) -> None:
-        die = Dice()
+        die = Dice(0)
         logger.info("neuer Würfel: Wert=%d, gehalten=%s", die.value, die.held)
         self.assertFalse(die.held)
         self.assertTrue(MIN_VALUE <= die.value <= MAX_VALUE)
 
     def test_roll_range(self) -> None:
-        die = Dice()
+        die = Dice(0)
         seen_min, seen_max = MAX_VALUE, MIN_VALUE
         for _ in range(50):
             die.roll()
@@ -36,7 +36,7 @@ class DiceTest(unittest.TestCase):
         logger.info("50 Würfe: Bereich %d–%d (erlaubt %d–%d)", seen_min, seen_max, MIN_VALUE, MAX_VALUE)
 
     def test_hold_release(self) -> None:
-        die = Dice()
+        die = Dice(0)
         die.hold()
         held_after_hold = die.held
         die.release()

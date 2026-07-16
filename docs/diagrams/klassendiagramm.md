@@ -80,7 +80,7 @@ classDiagram
         -game : Game
         -view : App
         +on_roll() void
-        +on_hold_toggle(dice_index: int) void
+        +on_hold_toggle(dice_id: int) void
         +on_category_chosen(category: ScoreCategory) void
         +refresh_view() void
     }
