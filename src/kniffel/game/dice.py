@@ -13,9 +13,10 @@ ROLLS_PER_TURN = 3
 class Dice:
     """Ein einzelner Würfel mit Wert und Halten-Zustand."""
 
-    def __init__(self) -> None:
+    def __init__(self, dice_id) -> None:
         self._value: int = MIN_VALUE
         self._held: bool = False
+        self.id = dice_id
 
     @property
     def value(self) -> int:
@@ -42,7 +43,7 @@ class DiceCup:
         self._dice: List[Dice] = [Dice() for _ in range(DICE_PER_CUP)]
         self._rolls_left: int = ROLLS_PER_TURN
 
-    @property
+    #@property
     def rolls_left(self) -> int:
         return self._rolls_left
 
@@ -69,3 +70,6 @@ class DiceCup:
         if self._rolls_left <= 0:
             raise RuntimeError("Keine Würfe mehr in diesem Zug übrig.")
         self._rolls_left -= 1
+
+    def get_diceList(self) ->  List[Dice]:
+        return self._dice
