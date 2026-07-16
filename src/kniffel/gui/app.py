@@ -1,13 +1,12 @@
 import tkinter as tk
 
 root = tk.Tk()
-
 root.title("Kniffel Game")
-
 root.geometry("1000x600")  # Set the window size 
-placeholder_Zettel = tk.Frame(root)
-placeholder_Zettel.configure(bg="lightgray")  # Set the background color of the frame
-placeholder_Zettel.grid(sticky="nsew")  # Position the frame at the top-left corner
+
+placeholder_Zettel = tk.Label(root)
+placeholder_Zettel.configure(bg="lightgray", text="rules_text")  # Set the background color of the frame
+placeholder_Zettel.grid(column=12, columnspan=5, sticky="nsew")  # Position the frame at the top-left corner
 
 """
 placeholder_regeln = tk.Frame(root, width=600, height=300)
@@ -29,9 +28,7 @@ with open("Kniffel-game/src/kniffel/gui/regeln.txt", "r", encoding="utf-8") as f
     rules_text = file.read()
 
 text_widget = tk.Text(root)
-text_widget.grid(column=0, row=5, sticky="nsew")
+text_widget.grid(column=0, row=5, rowspan=5, sticky="nsew")
 text_widget.insert(tk.END, rules_text)
-
-
 
 root.mainloop()
