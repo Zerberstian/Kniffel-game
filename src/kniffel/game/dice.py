@@ -40,7 +40,7 @@ class DiceCup:
     """Becher mit 5 Würfeln, verwaltet die Würfe pro Zug."""
 
     def __init__(self) -> None:
-        self._dice: List[Dice] = [Dice() for _ in range(DICE_PER_CUP)]
+        self._dice: List[Dice] = [Dice(id) for _ in range(DICE_PER_CUP)]        # _ ist i also index
         self._rolls_left: int = ROLLS_PER_TURN
 
     #@property
