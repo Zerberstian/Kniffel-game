@@ -8,8 +8,8 @@ print(f"Values: {cup.values()}\n")
 
 
 for d in cup.get_diceList():
-    print(f"D Value: {d.value} ")
-    print(f"ID: {d.dice_id} \n")
+    print(f"D Value:  {d.value} ")
+    print(f"ID:       {d.dice_id} \n")
 
 
 cup.roll_all()
@@ -22,8 +22,8 @@ print(f"rolles left: {cup.rolls_left()}\n")
 #print(cup.get_diceList())
 
 for d in cup.get_diceList():
-    print(f"D Value: {d.value} ")
-    print(f"ID: {d.dice_id} \n")
+    print(f"D Value:  {d.value} ")
+    print(f"ID:       {d.dice_id} \n")
 
 cup.roll_all()
 #cup.sort_dice()
@@ -34,5 +34,5 @@ print(f"Velues after rolling: {cup.values()}")
 print(f"rolles left: {cup.rolls_left()}")
 
 for d in cup.get_diceList():
-    print(f"D Value: {d.value} ")
-    print(f"ID: {d.dice_id} \n")
+    print(f"D Value:  {d.value} ")
+    print(f"ID:       {d.dice_id} \n")
