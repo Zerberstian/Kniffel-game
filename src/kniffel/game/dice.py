@@ -61,6 +61,7 @@ class DiceCup:
         for die in self._dice:
             if not die.held:
                 die.roll()
+                
 
     def reset(self) -> None:
         for die in self._dice:
@@ -77,3 +78,9 @@ class DiceCup:
 
     def get_diceList(self) ->  List[Dice]:
         return self._dice
+    
+    def sort_dice(self):
+        for i in range(DICE_PER_CUP):
+            for j in range(DICE_PER_CUP-1):
+                if self._dice[j].value > self._dice[j+1].value:
+                    self._dice[j], self._dice[j+1] = self._dice[j+1], self._dice[j]
