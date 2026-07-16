@@ -15,7 +15,7 @@ for d in cup.get_diceList():
 cup.roll_all()
 
 print("rolled\n")
-cup.sort_dice()
+#cup.sort_dice()
 
 print(f"Velues after rolling: {cup.values()}\n")
 print(f"rolles left: {cup.rolls_left()}\n")
@@ -26,7 +26,7 @@ for d in cup.get_diceList():
     print(f"ID: {d.dice_id} \n")
 
 cup.roll_all()
-cup.sort_dice()
+#cup.sort_dice()
 
 print("rolled")
 

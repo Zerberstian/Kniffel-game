@@ -55,13 +55,14 @@ class DiceCup:
         self._consume_roll()
         for die in self._dice:
             die.roll()
+            self.sort_dice()
 
     def roll_unheld(self) -> None:
         self._consume_roll()
         for die in self._dice:
             if not die.held:
                 die.roll()
-                
+                self.sort_dice()
 
     def reset(self) -> None:
         for die in self._dice:
