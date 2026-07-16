@@ -15,4 +15,6 @@ print(cup.rolls_left())
 print(cup.get_diceList())
 
 for d in cup.get_diceList():
-    print(d.value)
+    print(f"{d.value} Value")
+    print(f"{d.dice_id} ID \n")
+
