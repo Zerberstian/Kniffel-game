@@ -25,7 +25,7 @@ placeholder_reroll_btw.configure(bg="lightgreen")  # Set the background color of
 placeholder_reroll_btw.place(x=520, y=260)  # Position the frame at the top-left corner
 """
 
-with open("Kniffel-game/src/kniffel/gui/regeln.txt", "r") as file:
+with open("Kniffel-game/src/kniffel/gui/regeln.txt", "r", encoding="utf-8") as file:
     rules_text = file.read()
 
 text_widget = tk.Text(root)
