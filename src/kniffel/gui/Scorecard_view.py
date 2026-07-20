@@ -39,14 +39,14 @@ class ScoreFrame(tk.Frame):
     def createLabel(self):
         self.CategoryLabel = tk.Label(self)
         self.CategoryLabel.configure(text = Label_Names[self.index], font=(FONTSTYLE, FONTSIZE))
-        self.CategoryLabel.grid(row=0, column=0)
+        self.CategoryLabel.grid(row=0, column=0, sticky="nsew")
         
 
 #  Placeholder aktuell für Buttons
     def createButton(self):
         self.CategoryButton = tk.Button(self)
-        self.CategoryButton.configure(text = "")
-        self.CategoryButton.grid(row=0, column=1)
+        self.CategoryButton.configure(text = "", font=(FONTSTYLE, FONTSIZE))
+        self.CategoryButton.grid(row=0, column=1, sticky="nsew")
         
     
 
