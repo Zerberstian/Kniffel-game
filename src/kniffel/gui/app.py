@@ -105,15 +105,15 @@ Rule_Text_Widget.grid(column=0, row=1, sticky="nsew")
 Rule_Text_Widget.configure(font=(FONTSTYLE, FONTSIZESMOL))
 Rule_Text_Widget.insert(tk.END, rules_text)
 
+if __name__ == "__main__":
+    '''creates score subframes, one per category with Label and Button'''
+    CreatedFrames: List[tk.Frame] = [] 
 
-'''creates score subframes, one per category with Label and Button'''
-CreatedFrames: List[tk.Frame] = [] 
+    for i in range(NUMBER_OF_CATEGORIES):
+        score_Sub_Frames = ScoreFrame(Scorecard_Area, i)
+        score_Sub_Frames.pack(side="top", fill="both", expand=True)
+        score_Sub_Frames.configure(bg="#c46464")
+        CreatedFrames.append(score_Sub_Frames)
+            
 
-for i in range(NUMBER_OF_CATEGORIES):
-    score_Sub_Frames = ScoreFrame(Scorecard_Area, i)
-    score_Sub_Frames.pack(side="top", fill="both", expand=True)
-    score_Sub_Frames.configure(bg="#c46464")
-    CreatedFrames.append(score_Sub_Frames)
-        
-
-root.mainloop()
+    root.mainloop()
