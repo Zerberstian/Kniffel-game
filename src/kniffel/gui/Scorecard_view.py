@@ -54,16 +54,16 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("500x300")
 
-    frame1 = tk.Frame(root)
-    frame1.configure(bg="#e62929")
-    frame1.pack(fill="both", expand=True)
+    Master_Frame_Scorecard = tk.Frame(root)
+    Master_Frame_Scorecard.configure(bg="#e62929")
+    Master_Frame_Scorecard.pack(fill="both", expand=True)
 
     CreatedFrames: List[tk.Frame] = [] 
 
     for i in range(NUMBER_OF_CATEGORIES):
-        frame = ScoreFrame(frame1, i)
-        frame.pack(side="top")#, fill="both")#, expand=True)
-        CreatedFrames.append(frame)
+        score_Sub_Frames = ScoreFrame(Master_Frame_Scorecard, i)
+        score_Sub_Frames.pack(side="top")#, fill="both")#, expand=True)
+        CreatedFrames.append(score_Sub_Frames)
         
 
 
