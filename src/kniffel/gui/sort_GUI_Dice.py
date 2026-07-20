@@ -9,6 +9,7 @@ def sort_dice(self):
         for j in range(DICE_PER_CUP-1):
             if self._dice[j].value > self._dice[j+1].value:
                 self._dice[j], self._dice[j+1] = self._dice[j+1], self._dice[j]
+''' ^ soll nach Value sortieren'''
 
 if __name__ == "__main__":
     pass

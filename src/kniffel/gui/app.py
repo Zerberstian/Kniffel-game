@@ -20,13 +20,13 @@ Score_Lable_name_List  =  ["Einer:",
                             "Ergebnis:"]
 
 '''Constants for the File'''
-NUMBER_OF_CATEGORIES = 16
-FONTSTYLE = "Times New Roman"
-FONTSIZE = 20
-FONTSIZESMOL = 16
-DICE_IPADX = 30
-DICE_IPADY = 20
-DICE_BG = "#ffffff"
+NUMBER_OF_CATEGORIES = int(16)
+FONTSTYLE = str("Times New Roman")
+FONTSIZE = int(20)
+FONTSIZESMOL = int(16)
+DICE_IPADX = int(30)
+DICE_IPADY = int(20)
+DICE_BG = str("#ffffff")
 
 '''Import for Rules (.txt File)'''
 with open("Kniffel-game/src/kniffel/gui/regeln.txt", "r", encoding="utf-8") as file:
