@@ -87,7 +87,7 @@ Dice_Button_List.append(GUI_Dice_5)
 
 Reroll_Button = tk.Button(Dice_Playarea)
 Reroll_Button.grid(column=5, row=1, ipadx=10, ipady=10)#, sticky="nsew")
-Reroll_Button.configure(bg= "#5cee74", fg="#e92e2e", text=f"roll", font=(FONTSTYLE, FONTSIZE))
+Reroll_Button.configure(bg= DICE_BG, text=f"roll", font=(FONTSTYLE, FONTSIZE))
 
 Dice_Playarea.grid_columnconfigure(0, weight=1)
 Dice_Playarea.grid_columnconfigure(1, weight=1)

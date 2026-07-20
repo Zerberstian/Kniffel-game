@@ -21,6 +21,10 @@ Label_Names  =  ["Einer:",
 NUMBER_OF_CATEGORIES = 16
 FONTSTYLE = "Times New Roman"
 FONTSIZE = 20
+FONTSIZESMOL = 16
+DICE_IPADX = 30
+DICE_IPADY = 20
+DICE_BG = "#ffffff"
 
 class ScoreFrame(tk.Frame): 
     def __init__(self, master: tk.Frame, i):
@@ -38,14 +42,14 @@ class ScoreFrame(tk.Frame):
 
     def createLabel(self):
         self.CategoryLabel = tk.Label(self)
-        self.CategoryLabel.configure(text = Label_Names[self.index], font=(FONTSTYLE, FONTSIZE))
+        self.CategoryLabel.configure(text = Label_Names[self.index], font=(FONTSTYLE, FONTSIZE), bg=DICE_BG)    # The Label has the same bg color as the Bottons
         self.CategoryLabel.grid(row=0, column=0, sticky="nsew")
         
 
 #  Placeholder aktuell für Buttons
     def createButton(self):
         self.CategoryButton = tk.Button(self)
-        self.CategoryButton.configure(text = "", font=(FONTSTYLE, FONTSIZE))
+        self.CategoryButton.configure(text = "", font=(FONTSTYLE, FONTSIZE), bg=DICE_BG)
         self.CategoryButton.grid(row=0, column=1, sticky="nsew")
         
     
