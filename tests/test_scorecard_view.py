@@ -1,7 +1,6 @@
-import tkinter as tk
 import unittest
 
-from _support import configure_logging
+from _support import configure_logging, get_shared_tk_root
 from kniffel.game.category import (
     Chance,
     FourOfAKind,
@@ -21,9 +20,11 @@ def setUpModule() -> None:
 
 
 class ScorecardViewTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.root = get_shared_tk_root()
+
     def setUp(self) -> None:
-        self.root = tk.Tk()
-        self.root.withdraw()
         self.frames = [ScoreFrame(self.root, i) for i in range(NUMBER_OF_CATEGORIES)]
 
         self.einer = NumberCategory("Einer", 1)
@@ -49,7 +50,8 @@ class ScorecardViewTest(unittest.TestCase):
         self.view = ScorecardView(self.frames, self.categories, on_category_chosen=self.chosen.append)
 
     def tearDown(self) -> None:
-        self.root.destroy()
+        for frame in self.frames:
+            frame.destroy()
 
     def test_render_shows_filled_scores_and_blanks_open_ones(self) -> None:
         self.score_card.set_score(self.einer, 3)
@@ -66,6 +68,11 @@ class ScorecardViewTest(unittest.TestCase):
     def test_button_click_reports_matching_category(self) -> None:
         self.frames[7].CategoryButton.invoke()
         self.assertEqual(self.chosen, [self.dreierpasch])
+
+    def test_disabled_view_ignores_button_clicks(self) -> None:
+        self.view.set_enabled(False)
+        self.frames[7].CategoryButton.invoke()
+        self.assertEqual(self.chosen, [])
 
 
 if __name__ == "__main__":

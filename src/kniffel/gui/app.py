@@ -1,119 +1,118 @@
+"""Baut das Fenster auf und verbindet Game/GameConnector mit DiceView/ScorecardView."""
 import tkinter as tk
-from Scorecard_view import ScoreFrame
-from typing import List
+from pathlib import Path
+from typing import List, Optional
 
-Score_Lable_name_List  =  ["Einer:", 
-                            "Zweier:",
-                            "Dreier:", 
-                            "Vierer:", 
-                            "Fünfer:", 
-                            "Sechser:", 
-                            "Bonus Oben:",
-                            "Dreierpasch:",
-                            "Viererpasch:",
-                            "Full House:",
-                            "Kleine Straße:",
-                            "Große Straße:",
-                            "Kniffel:",
-                            "Chance:",
-                            "Bonus Unten:",
-                            "Ergebnis:"]
+from ..connector.game_connector import GameConnector
+from ..game.category import (
+    Chance,
+    FourOfAKind,
+    FullHouse,
+    Kniffel,
+    LargeStraight,
+    NumberCategory,
+    ScoreCategory,
+    SmallStraight,
+    ThreeOfAKind,
+)
+from ..game.game import Game
+from .dice_view import DiceView
+from .Scorecard_view import (
+    DICE_BG,
+    FONTSIZE,
+    FONTSIZESMOL,
+    FONTSTYLE,
+    NUMBER_OF_CATEGORIES,
+    ScoreFrame,
+    ScorecardView,
+)
 
-'''Constants for the File'''
-NUMBER_OF_CATEGORIES = int(16)
-FONTSTYLE = str("Times New Roman")
-FONTSIZE = int(20)
-FONTSIZESMOL = int(16)
-DICE_IPADX = int(30)
-DICE_IPADY = int(20)
-DICE_BG = str("#ffffff")
-
-'''Import for Rules (.txt File)'''
-with open("Kniffel-game/src/kniffel/gui/regeln.txt", "r", encoding="utf-8") as file:
-    rules_text = file.read()
-
-'''Base for GUI (Window)'''
-root = tk.Tk()
-root.title("Kniffel Game")
-root.maxsize(width=1920, height=1080)       # 1920x1080
-root.minsize(width=900, height=600)         # 900x600
-root.geometry("1600x900")                   # Set the window size 
-root.configure(bg="green")
-
-'''Weight of the Root-grid'''
-root.grid_columnconfigure(0, weight=1)      
-root.grid_columnconfigure(1, weight=1)
-root.grid_rowconfigure(0, weight=2)
-root.grid_rowconfigure(1, weight=2)
-
-'''Area for Kniffel Points'''
-Scorecard_Area = tk.Frame(root)
-Scorecard_Area.configure(bg="lightgray")                            # Set the background color of the frame
-Scorecard_Area.grid(row=0 ,column=1, rowspan=2, sticky="nsew")      # Position the frame at the top-left corner
-
-'''PLayarea'''
-Dice_Playarea = tk.Frame(root)
-Dice_Playarea.configure(bg="#499240")                             # Set the background color of the frame
-Dice_Playarea.grid(column=0, row=0, sticky="nsew")                  # Position the frame at the top-left corner
-Dice_Playarea.grid_rowconfigure(0, minsize=200)
-
-Dice_Playarea.grid_columnconfigure(0, weight=1)
-Dice_Playarea.grid_columnconfigure(1, weight=1)
-Dice_Playarea.grid_columnconfigure(2, weight=1)
-Dice_Playarea.grid_columnconfigure(3, weight=1)
-Dice_Playarea.grid_columnconfigure(4, weight=1)
-Dice_Playarea.grid_rowconfigure(0, weight=2)
-
-'''List with all GUI Elements for Dice'''
-'''can or will be used for sorting, instad of sorting in Dice itself'''
-Dice_Button_List = []
-
-'''Buttons for Dice (GUI Element)'''
-GUI_Dice_1 = tk.Button(Dice_Playarea)
-GUI_Dice_1.grid(column=0, row=0, ipadx=DICE_IPADX, ipady=DICE_IPADY)
-GUI_Dice_1.configure(bg= DICE_BG, text=f"")
-Dice_Button_List.append(GUI_Dice_1)
-
-GUI_Dice_2 = tk.Button(Dice_Playarea)
-GUI_Dice_2.grid(column=1, row=0, ipadx=DICE_IPADX, ipady=DICE_IPADY)
-Dice_Button_List.append(GUI_Dice_2)
-
-GUI_Dice_3 = tk.Button(Dice_Playarea)
-GUI_Dice_3.grid(column=2, row=0, ipadx=DICE_IPADX, ipady=DICE_IPADY)
-GUI_Dice_3.configure(bg= DICE_BG, text=f"")
-Dice_Button_List.append(GUI_Dice_3)
-
-GUI_Dice_4 = tk.Button(Dice_Playarea)
-GUI_Dice_4.grid(column=3, row=0, ipadx=DICE_IPADX, ipady=DICE_IPADY)
-GUI_Dice_4.configure(bg=DICE_BG, text=f"")
-Dice_Button_List.append(GUI_Dice_4)
-
-GUI_Dice_5 = tk.Button(Dice_Playarea)
-GUI_Dice_5.grid(column=4, row=0, ipadx=DICE_IPADX, ipady=DICE_IPADY)
-GUI_Dice_5.configure(bg= DICE_BG, text=f"")
-Dice_Button_List.append(GUI_Dice_5)
+RULES_PATH = Path(__file__).parent / "regeln.txt"
 
 
-Reroll_Button = tk.Button(Dice_Playarea)
-Reroll_Button.grid(column=5, row=1, ipadx=10, ipady=10)
-Reroll_Button.configure(bg= DICE_BG, text=f"roll", font=(FONTSTYLE, FONTSIZE))
+def build_categories() -> List[ScoreCategory]:
+    return [
+        NumberCategory("Einer", 1),
+        NumberCategory("Zweier", 2),
+        NumberCategory("Dreier", 3),
+        NumberCategory("Vierer", 4),
+        NumberCategory("Fünfer", 5),
+        NumberCategory("Sechser", 6),
+        ThreeOfAKind("Dreierpasch"),
+        FourOfAKind("Viererpasch"),
+        FullHouse("Full House"),
+        SmallStraight("Kleine Straße"),
+        LargeStraight("Große Straße"),
+        Kniffel("Kniffel"),
+        Chance("Chance"),
+    ]
 
 
-'''Textbox for imported Rule File'''
-Rule_Text_Widget = tk.Text(root)
-Rule_Text_Widget.grid(column=0, row=1, sticky="nsew")
-Rule_Text_Widget.configure(font=(FONTSTYLE, FONTSIZESMOL))
-Rule_Text_Widget.insert(tk.END, rules_text)
+class App:
+    """Erzeugt Fenster + Widgets und verknüpft sie über GameConnector mit Game."""
+
+    def __init__(self, player_names: List[str], master: Optional[tk.Misc] = None) -> None:
+        categories = build_categories()
+        self._game = Game(player_names, categories)
+
+        '''master erlaubt Tests, sich einen Tk-Root zu teilen statt für jeden Fall einen neuen zu erzeugen'''
+        self.root = master if master is not None else tk.Tk()
+        self.root.title("Kniffel Game")
+        self.root.maxsize(width=1920, height=1080)
+        self.root.minsize(width=900, height=600)
+        self.root.geometry("1600x900")
+        self.root.configure(bg="green")
+        self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_columnconfigure(1, weight=1)
+        self.root.grid_rowconfigure(0, weight=2)
+        self.root.grid_rowconfigure(1, weight=2)
+
+        scorecard_area = tk.Frame(self.root, bg="lightgray")
+        scorecard_area.grid(row=0, column=1, rowspan=2, sticky="nsew")
+
+        dice_playarea = tk.Frame(self.root, bg="#499240")
+        dice_playarea.grid(column=0, row=0, sticky="nsew")
+        dice_playarea.grid_rowconfigure(0, minsize=200)
+        for column in range(5):
+            dice_playarea.grid_columnconfigure(column, weight=1)
+
+        '''DiceView packt seine Labels; braucht daher einen eigenen Frame statt Dice_Playarea selbst '''
+        dice_row = tk.Frame(dice_playarea, bg=DICE_BG)
+        dice_row.grid(column=0, row=0, columnspan=5, sticky="nsew")
+
+        reroll_button = tk.Button(dice_playarea, bg=DICE_BG, text="roll", font=(FONTSTYLE, FONTSIZE))
+        reroll_button.grid(column=5, row=1, ipadx=10, ipady=10)
+
+        status_label = tk.Label(dice_playarea, bg=DICE_BG, font=(FONTSTYLE, FONTSIZE), text="")
+        status_label.grid(column=0, row=1, columnspan=5, sticky="nsew")
+
+        rule_text_widget = tk.Text(self.root, font=(FONTSTYLE, FONTSIZESMOL))
+        rule_text_widget.grid(column=0, row=1, sticky="nsew")
+        rule_text_widget.insert(tk.END, RULES_PATH.read_text(encoding="utf-8"))
+
+        score_frames = [ScoreFrame(scorecard_area, i) for i in range(NUMBER_OF_CATEGORIES)]
+        for frame in score_frames:
+            frame.pack(side="top", fill="both", expand=True)
+            frame.configure(bg="#c46464")
+
+        connector = GameConnector(self._game, self)
+        self.dice_view = DiceView(dice_row, on_dice_clicked=connector.on_hold_toggle)
+        self.scorecard_view = ScorecardView(score_frames, categories, on_category_chosen=connector.on_category_chosen)
+        self.reroll_button = reroll_button
+        self.status_label = status_label
+        reroll_button.configure(command=connector.on_roll)
+
+        connector.refresh_view()
+
+    def show_winner(self, name: str, score: int) -> None:
+        self.status_label.configure(text=f"{name} gewinnt mit {score} Punkten!")
+        self.reroll_button.configure(state=tk.DISABLED)
+        self.dice_view.set_enabled(False)
+        self.scorecard_view.set_enabled(False)
+
+    def run(self) -> None:
+        self.root.mainloop()
+
 
 if __name__ == "__main__":
-    '''creates score subframes, one per category with Label and Button'''
-    CreatedFrames: List[tk.Frame] = [] 
-
-    for i in range(NUMBER_OF_CATEGORIES):
-        score_Sub_Frames = ScoreFrame(Scorecard_Area, i)
-        score_Sub_Frames.pack(side="top", fill="both", expand=True)
-        score_Sub_Frames.configure(bg="#c46464")
-        CreatedFrames.append(score_Sub_Frames)
-            
-
-    root.mainloop()
+    App(["Spieler 1", "Spieler 2"]).run()

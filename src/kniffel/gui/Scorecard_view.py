@@ -21,7 +21,7 @@ Score_Lable_name_List  =  ["Einer:",
                             "Bonus Unten:",
                             "Ergebnis:"]
 
-'''Constants for the File'''
+
 NUMBER_OF_CATEGORIES = 16
 FONTSTYLE = "Times New Roman"
 FONTSIZE = 20
@@ -29,8 +29,6 @@ FONTSIZESMOL = 16
 DICE_IPADX = 30
 DICE_IPADY = 20
 DICE_BG = "#ffffff"
-
-'''Class with function call in init to use function on object creation'''
 class ScoreFrame(tk.Frame): 
     def __init__(self, master: tk.Frame, i):
         super().__init__(master)
@@ -44,14 +42,12 @@ class ScoreFrame(tk.Frame):
         self.createLabel()
         self.createButton()
 
-    '''creates Label for each Category in Score_Lable_name_List'''
     def createLabel(self):
         self.CategoryLabel = tk.Label(self)
-        self.CategoryLabel.configure(text = Score_Lable_name_List[self.index], font=(FONTSTYLE, FONTSIZE), bg=DICE_BG)    # The Label has the same bg color as the Bottons
+        self.CategoryLabel.configure(text = Score_Lable_name_List[self.index], font=(FONTSTYLE, FONTSIZE), bg=DICE_BG)
         self.CategoryLabel.grid(row=0, column=0, sticky="nsew")
         
 
-    '''creates a empty Button for each Category'''
     def createButton(self):
         self.CategoryButton = tk.Button(self)
         self.CategoryButton.configure(text = "", font=(FONTSTYLE, FONTSIZE), bg=DICE_BG)
@@ -61,7 +57,8 @@ class ScoreFrame(tk.Frame):
 
 '''Index der ScoreFrames, die keiner Kategorie entsprechen (Bonus/Ergebnis-Zeilen)'''
 UPPER_BONUS_INDEX = 6
-LOWER_BONUS_INDEX = 14  # Kniffel-Bonus (mehrfacher Kniffel) noch nicht in ScoreCard implementiert, Zeile bleibt leer - und muss noch im Backend hinzugefügt werden
+LOWER_BONUS_INDEX = 14
+'''Kniffel-Bonus (mehrfacher Kniffel) noch nicht in ScoreCard implementiert, Zeile bleibt leer - und muss noch im Backend hinzugefügt werden '''
 TOTAL_INDEX = 15
 _VIRTUAL_INDICES = (UPPER_BONUS_INDEX, LOWER_BONUS_INDEX, TOTAL_INDEX)
 
@@ -81,6 +78,11 @@ class ScorecardView:
 
         for frame, category in zip(self._category_frames, categories):
             frame.CategoryButton.configure(command=lambda c=category: on_category_chosen(c))
+
+    def set_enabled(self, enabled: bool) -> None:
+        state = tk.NORMAL if enabled else tk.DISABLED
+        for frame in self._category_frames:
+            frame.CategoryButton.configure(state=state)
 
     def render(self, score_card: ScoreCard) -> None:
         for frame, category in zip(self._category_frames, self._categories):

@@ -30,3 +30,6 @@ class GameConnector:
     def refresh_view(self) -> None:
         self._view.dice_view.render(self._game.dice())
         self._view.scorecard_view.render(self._game.current_player().score_card)
+        if self._game.is_over():
+            winner = self._game.winner()
+            self._view.show_winner(winner.name, winner.score_card.total_score())

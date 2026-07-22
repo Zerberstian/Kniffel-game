@@ -25,6 +25,10 @@ class FakeView:
     def __init__(self) -> None:
         self.dice_view = FakeSubView()
         self.scorecard_view = FakeSubView()
+        self.winner = None
+
+    def show_winner(self, name, score) -> None:
+        self.winner = (name, score)
 
 
 class GameConnectorTest(unittest.TestCase):
@@ -53,6 +57,19 @@ class GameConnectorTest(unittest.TestCase):
         self.connector.on_roll()
         self.connector.on_category_chosen(self.categories[1])
         self.assertEqual(self.game.current_player().name, "Bob")
+        self.assertIsNone(self.view.winner)
+
+    def test_game_over_reports_winner_to_view(self) -> None:
+        """Die Züge wechseln pro Spieler, daher wird category[t // num_players] mit jedem Zug gekoppelt,
+        um jede Kategorie für jeden Spieler genau einmal in allen Zügen auszufüllen."""
+        num_players = len(self.game._players)
+        for turn in range(num_players * len(self.categories)):
+            self.connector.on_roll()
+            self.connector.on_category_chosen(self.categories[turn // num_players])
+        self.assertIsNotNone(self.view.winner)
+        name, score = self.view.winner
+        self.assertEqual(self.game.winner().name, name)
+        self.assertEqual(self.game.winner().score_card.total_score(), score)
 
 
 if __name__ == "__main__":
