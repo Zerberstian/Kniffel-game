@@ -25,6 +25,9 @@ class ScoreCard:
     def is_filled(self, category: ScoreCategory) -> bool:
         return self._entries.get(category) is not None
 
+    def score(self, category: ScoreCategory) -> Optional[int]:
+        return self._entries.get(category)
+
     def upper_section_bonus(self) -> int:
         upper_sum = sum(
             value

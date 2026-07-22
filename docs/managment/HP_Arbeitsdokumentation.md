@@ -344,7 +344,7 @@ siehe `~/docs/diagramms` und `README.md`
 ##### 1. `ScorecardView`-Klasse
 
 - verwaltet die `ScoreFrame`
-  -Liste aus Scorecard_view.py
+- Liste aus Scorecard_view.py
 - implementiert render(score_card) (Werte in Labels/Buttons eintragen) und verbindet
 - jeden CategoryButton mit `on_category_chosen(category)`
 
