@@ -332,3 +332,46 @@ siehe `~/docs/diagramms` und `README.md`
        die = next(d for d in self._game.dice() if d.dice_id == dice_id)
        die.release() if die.held else die.hold()
    ```
+
+---
+
+## to-dos
+
+> 22.07.2026
+
+**Bereich:** Planung & Projektfinalisierung
+
+##### 1. `ScorecardView`-Klasse
+
+- verwaltet die `ScoreFrame`
+  -Liste aus Scorecard_view.py
+- implementiert render(score_card) (Werte in Labels/Buttons eintragen) und verbindet
+- jeden CategoryButton mit `on_category_chosen(category)`
+
+##### 2. App-Klasse in app.py
+
+- Game, GameConnector, DiceView, ScorecardView instanziieren
+- Würfel-Buttons → `on_hold_toggle(dice_id)`
+- Reroll-Button → `on_roll()`
+
+##### 3. Import in app.py fixen
+
+- `from Scorecard_view import ScoreFrame` unresolved bei Ausführung als Package (-m)
+  → relativer Import nötig
+
+##### 4. sort_GUI_Dice.py löschen
+
+- Duplikat (self außerhalb einer Klasse
+- range(Dice_Button_List) statt Länge)
+- Sortierung läuft bereits korrekt in `DiceView.render()`
+
+##### 5. Funktionierender Entrypoint
+
+- Spieler-Namen/Kategorien festlegen
+- Game erzeugen
+- alles verbinden, dann erst `mainloop()`
+
+##### 6. Spielende
+
+- `Game.is_over()`
+- und `winner()` irgendwo in der GUI abfangen und anzeigen.
