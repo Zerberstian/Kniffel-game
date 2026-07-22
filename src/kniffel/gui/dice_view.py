@@ -17,8 +17,8 @@ class DiceView:
         self._labels = []
 
         for die in sorted(dice, key=lambda d: d.value):
-            text = str(die.value) + (" *" if die.held else "")
-            label = tk.Label(self.master, text=text) # <= text = text ist krachig weil test tk definiert ist und du quasti aber hier die Variable neu definierst
+            label_text = str(die.value) + (" *" if die.held else "")
+            label = tk.Label(self.master, text=label_text)
             label.dice_id = die.dice_id
             label.pack(side=tk.LEFT)
             self._labels.append(label)
