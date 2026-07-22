@@ -2,13 +2,17 @@
 
 ## Übersicht (chronologisch)
 
-| Datum            | Aufgabenpaket                                           | Bereich                   |
-| ---------------- | ------------------------------------------------------- | ------------------------- |
-| 09.07.2026       | Projektstruktur / Dateistruktur und Klassendiagramm     | Dokumentation und Planung |
-| 10. & 13.07.2026 | `dice.py` (Dice, DiceCup) + test                        | Programmlogik Backend     |
-| 13.07.2026       | `category.py` (ScoreCategory-Hierarchie) + test         | Programmlogik Backend     |
-| 14.07.2026       | Dokumentation der Softwareentwicklung (dieses Dokument) | Dokumentation             |
-| 15.07.2026       | `score_card.py` (ScoreCard) + test                      | Programmlogik Backend     |
+| Datum          | Aufgabenpaket                                           | Bereich                              |
+| -------------- | ------------------------------------------------------- | ------------------------------------ |
+| 09.07.2026     | Projektstruktur / Dateistruktur und Klassendiagramm     | Dokumentation und Planung            |
+| 10./13.07.2026 | `dice.py` (Dice, DiceCup) + test                        | Programmlogik Backend                |
+| 13.07.2026     | `category.py` (ScoreCategory-Hierarchie) + test         | Programmlogik Backend                |
+| 14.07.2026     | Dokumentation der Softwareentwicklung (dieses Dokument) | Dokumentation                        |
+| 15.07.2026     | `score_card.py` (ScoreCard) + test                      | Programmlogik Backend                |
+| 16.07.2026     | `player.py` (Player) + test                             | Programmlogik Backend                |
+| 16.07.2026     | `game.py` (Game) + test                                 | Programmlogik Backend                |
+| 16.07.2026     | `game_connector.py` (GameConnector) + test              | Programmlogik Connect                |
+| 16.07.2026     | Einführung`dice_id` + Sortierung in `DiceView`          | Programmlogik und GUI-Funktionalität |
 
 ---
 
@@ -161,3 +165,170 @@ siehe `~/docs/diagramms` und `README.md`
   ```
 
 - `total_score()` summiert alle anschließend die eingetragenen Werte plus Bonus, offene (`None`) Einträge werden übersprungen
+
+## player.py
+
+> 16.07.2026
+
+**Bereich:** Programmlogik Backend
+
+**Aufgaben:**
+
+- `Player`: Name + eigene `ScoreCard`
+- Tests: `test_player.py`
+
+**Umsetzung:**
+
+- Kategorien werden dem Konstruktor übergeben statt in `Player` selbst erzeugt - laut Klassendiagramm sind Kategorien geteilte Objekte, keine Player-eigenen:
+
+  ```python
+  def __init__(self, name: str, categories: List[ScoreCategory]) -> None:
+      self._name = name
+      self._score_card = ScoreCard(categories)
+  ```
+
+- jeder Spieler bekommt dabei trotzdem seine eigene `ScoreCard`-Instanz, obwohl die Kategorien-Liste geteilt ist - Eintragungen eines Spielers wirken sich nicht auf andere aus
+
+## game.py
+
+> 16.07.2026
+
+**Bereich:** Programmlogik Backend
+
+**Aufgaben:**
+
+- `Game`: Spielerliste, aktueller Spieler, gemeinsamer `DiceCup`, Kategorien
+- `current_player()`, `roll_dice()`, `choose_category()`, `next_turn()`, `is_over()`, `winner()`
+- Tests: `test_game.py`
+
+**Umsetzung:**
+
+- `Game` erzeugt seine `Player` und den `DiceCup` selbst, bekommt die Kategorien aber übergeben (Aggregation, geteilt mit allen `ScoreCard`s):
+
+  ```python
+  def __init__(self, player_names: List[str], categories: List[ScoreCategory]) -> None:
+      self._categories = categories
+      self._players: List[Player] = [Player(name, categories) for name in player_names]
+      self._current_player_index = 0
+      self._dice_cup = DiceCup()
+  ```
+
+- `roll_dice()` unterscheidet ersten Wurf vom zweiten/dritten über `rolls_left` statt über einen extra Zustand - ist `rolls_left` noch auf dem Startwert, wurde in diesem Zug noch nicht gewürfelt:
+
+  ```python
+  def roll_dice(self) -> None:
+      if self._dice_cup.rolls_left == ROLLS_PER_TURN:
+          self._dice_cup.roll_all()
+      else:
+          self._dice_cup.roll_unheld()
+  ```
+
+- `choose_category()` bündelt Punkten + Zugwechsel, damit das nicht bei jedem Aufruf (später `GameConnector`) wiederholt werden muss:
+
+  ```python
+  def choose_category(self, category: ScoreCategory) -> None:
+      score = category.calculate_score(self._dice_cup.values())
+      self.current_player().score_card.set_score(category, score)
+      self.next_turn()
+  ```
+
+- `next_turn()` setzt den `DiceCup` zurück und rechnet den Spielerindex mit Modulo weiter - kein Sonderfall für "letzter Spieler wieder von vorne":
+
+  ```python
+  def next_turn(self) -> None:
+      self._dice_cup.reset()
+      self._current_player_index = (self._current_player_index + 1) % len(self._players)
+  ```
+
+- `is_over()` prüft direkt über `ScoreCard.is_filled()` je Spieler und Kategorie statt eigenen Zähler mitzuführen
+- `winner()` per `max(..., key=...)` über `total_score()` statt manueller Vergleichsschleife
+
+## game_connector.py
+
+> 16.07.2026
+
+**Bereich:** Programmlogik Backend
+
+**Aufgaben:**
+
+- `GameConnector`: einzige Klasse, die sowohl `Game` als auch die GUI (`App`) kennt
+- `on_roll()`, `on_hold_toggle()`, `on_category_chosen()`, `refresh_view()`
+- Tests: `test_game_connector.py` (mit einer Fake-View statt echter GUI)
+
+**Umsetzung:**
+
+- `Dice`-Zugriff war bisher nirgends öffentlich (`DiceCup` hatte nur `values() -> List[int]`), `DiceView.render()` braucht laut Diagramm aber die `Dice`-Objekte selbst (wegen `held`). Deshalb kleine Ergänzung in `dice.py`/`game.py` um eine `dice`-Zugriffskette analog zu `rolls_left`:
+
+  ```python
+  # DiceCup
+  @property
+  def dice(self) -> List[Dice]:
+      return list(self._dice)
+
+  # Game
+  def dice(self) -> List[Dice]:
+      return self._dice_cup.dice
+  ```
+
+- `view` bewusst als `Any` typisiert statt `App` zu importieren: `gui/app.py` ist noch keine `App`, sondern nur ein Skript, das beim Import direkt `tk.Tk()` und `root.mainloop()` ausführt - ein wirklicher Import hätte ein Fenster geöffnet und somit die Tests blockiert:
+
+  ```python
+  def __init__(self, game: Game, view: Any) -> None:
+      self._game = game
+      self._view = view
+  ```
+
+- jede Aktion delegiert an `Game` und ruft danach `refresh_view()` auf, damit die View nie manuell geupdated werden muss:
+
+  ```python
+  def on_category_chosen(self, category: ScoreCategory) -> None:
+      self._game.choose_category(category)
+      self.refresh_view()
+  ```
+
+- `refresh_view()` ruft `dice_view.render()` und `scorecard_view.render()` auf - `GameConnector` ist die einzige Klasse, die beide Seiten (Spiellogik und GUI) kennen darf, deshalb hier bewusst der direkte Zugriff auf die Teil-Views von `App`
+- Getestet wird also mit einer einfachen Fake-View (zwei Attribute mit `render()`) statt der echten, noch nicht fertigen GUI-Klasse
+
+## dice_id & Sortierung in DiceView
+
+> 16.07.2026
+
+**Bereich:** Programmlogik GUI / Merge
+
+**Aufgaben:**
+
+- `DiceView.render()`: Würfel sortiert nach Wert anzeigen statt in Wurf-Reihenfolge
+- Merge-Konflikt mit `origin/main`: dort gab es bereits `dice_id` in `DiceCup`, aber auch ein `sort_dice()` direkt im Model - Sortierung ist Anzeigesache, nicht Spiellogik, deshalb verworfen (siehe Merge-Commit)
+
+**Umsetzung (logische Kette):**
+
+1. Anzeige soll sortiert sein (z.B. alle Fünfer nebeneinander), das Model braucht das nicht - `values()`/`calculate_score()` ist die Reihenfolge egal
+2. Sortieren im `DiceCup` (origin's `sort_dice()`) vermischt Spiellogik mit reinem Anzeige-Bedürfnis → stattdessen sortiert `DiceView.render()` selbst:
+
+   ```python
+   for die in sorted(dice, key=lambda d: d.value):
+       ...
+   ```
+
+3. Dadurch stimmt die Listenposition nach dem Sortieren nicht mehr mit der Position in `DiceCup._dice` überein - "Klick auf Index 2" träfe nach dem Sortieren den falschen Würfel
+4. Lösung: jeder `Dice` bekommt eine stabile `dice_id` (Vergabe bei Erzeugung, unabhängig von späterer Sortierung in der Ansicht):
+
+   ```python
+   def __init__(self, dice_id: int) -> None:
+       ...
+       self.dice_id = dice_id
+   ```
+
+5. `DiceView` hängt die `dice_id` als Attribut ans jeweilige Label, unabhängig von dessen Anzeigeposition:
+
+   ```python
+   label.dice_id = die.dice_id
+   ```
+
+6. `GameConnector.on_hold_toggle(dice_id)` sucht den Würfel darüber statt über einen Index - Es funktioniert also unabhängig von der Sortierung:
+
+   ```python
+   def on_hold_toggle(self, dice_id: int) -> None:
+       die = next(d for d in self._game.dice() if d.dice_id == dice_id)
+       die.release() if die.held else die.hold()
+   ```
