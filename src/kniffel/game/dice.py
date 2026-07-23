@@ -16,6 +16,7 @@ class Dice:
     def __init__(self, dice_id: int) -> None:
         self._value: int = MIN_VALUE
         self._held: bool = False
+        self._locked: bool = False
         self.dice_id = dice_id
 
     @property
@@ -26,14 +27,22 @@ class Dice:
     def held(self) -> bool:
         return self._held
 
+    @property
+    def locked(self) -> bool:
+        return self._locked
+
     def roll(self) -> None:
         self._value = random.randint(MIN_VALUE, MAX_VALUE)
 
     def hold(self) -> None:
         self._held = True
 
+    def lock(self) -> None:
+        self._locked = True
+
     def release(self) -> None:
         self._held = False
+        self._locked = False
 
 
 class DiceCup:
@@ -59,7 +68,9 @@ class DiceCup:
     def roll_unheld(self) -> None:
         self._consume_roll()
         for die in self._dice:
-            if not die.held:
+            if die.held:
+                die.lock()
+            else:
                 die.roll()
 
     def reset(self) -> None:

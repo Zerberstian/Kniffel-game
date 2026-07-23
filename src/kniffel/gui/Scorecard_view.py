@@ -1,5 +1,5 @@
 import tkinter as tk
-from typing import Callable, List
+from typing import Callable, List, Optional
 
 from ..game.category import ScoreCategory
 from ..game.score_card import ScoreCard
@@ -29,36 +29,44 @@ FONTSIZESMOL = 16
 DICE_IPADX = 30
 DICE_IPADY = 20
 DICE_BG = "#ffffff"
-class ScoreFrame(tk.Frame): 
-    def __init__(self, master: tk.Frame, i):
-        super().__init__(master)
+PREVIEW_FG = "#9aa0a6"
+class ScoreFrame(tk.Frame):
+    def __init__(self, master: tk.Frame, i, bg: str = DICE_BG):
+        super().__init__(master, bg=bg)
 
         self.master = master
+        self._bg = bg
 
         self.CategoryLabel = None
         self.CategoryButton = None
         self.index = i
+
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0, minsize=90)
+        self.grid_rowconfigure(0, weight=1)
 
         self.createLabel()
         self.createButton()
 
     def createLabel(self):
         self.CategoryLabel = tk.Label(self)
-        self.CategoryLabel.configure(text = Score_Lable_name_List[self.index], font=(FONTSTYLE, FONTSIZE), bg=DICE_BG)
-        self.CategoryLabel.grid(row=0, column=0, sticky="nsew")
-        
+        self.CategoryLabel.configure(
+            text=Score_Lable_name_List[self.index], font=(FONTSTYLE, FONTSIZE), bg=self._bg, anchor="w"
+        )
+        self.CategoryLabel.grid(row=0, column=0, sticky="nsew", padx=(10, 0))
 
     def createButton(self):
         self.CategoryButton = tk.Button(self)
-        self.CategoryButton.configure(text = "", font=(FONTSTYLE, FONTSIZE), bg=DICE_BG)
-        self.CategoryButton.grid(row=0, column=1, sticky="nsew")
+        self.CategoryButton.configure(
+            text="", font=(FONTSTYLE, FONTSIZE), bg=DICE_BG, fg="black", disabledforeground="black"
+        )
+        self.CategoryButton.grid(row=0, column=1, sticky="nsew", padx=6, pady=4)
         
     
 
 '''Index der ScoreFrames, die keiner Kategorie entsprechen (Bonus/Ergebnis-Zeilen)'''
 UPPER_BONUS_INDEX = 6
 LOWER_BONUS_INDEX = 14
-'''Kniffel-Bonus (mehrfacher Kniffel) noch nicht in ScoreCard implementiert, Zeile bleibt leer - und muss noch im Backend hinzugefügt werden '''
 TOTAL_INDEX = 15
 _VIRTUAL_INDICES = (UPPER_BONUS_INDEX, LOWER_BONUS_INDEX, TOTAL_INDEX)
 
@@ -79,17 +87,28 @@ class ScorecardView:
         for frame, category in zip(self._category_frames, categories):
             frame.CategoryButton.configure(command=lambda c=category: on_category_chosen(c))
 
+        '''Bonus-/Ergebnis-Zeilen haben keine Kategorie und keinen Command - sollen nicht klickbar aussehen'''
+        for i in _VIRTUAL_INDICES:
+            frames[i].CategoryButton.configure(state=tk.DISABLED, relief=tk.FLAT)
+
     def set_enabled(self, enabled: bool) -> None:
         state = tk.NORMAL if enabled else tk.DISABLED
         for frame in self._category_frames:
             frame.CategoryButton.configure(state=state)
 
-    def render(self, score_card: ScoreCard) -> None:
+    def render(self, score_card: ScoreCard, dice_values: Optional[List[int]] = None) -> None:
         for frame, category in zip(self._category_frames, self._categories):
             value = score_card.score(category)
-            frame.CategoryButton.configure(text="" if value is None else str(value))
+            if value is not None:
+                frame.CategoryButton.configure(text=str(value), state=tk.DISABLED, fg="black")
+            elif dice_values is not None:
+                preview = category.calculate_score(dice_values)
+                frame.CategoryButton.configure(text=str(preview), state=tk.NORMAL, fg=PREVIEW_FG)
+            else:
+                frame.CategoryButton.configure(text="", state=tk.NORMAL, fg="black")
 
         self._frames[UPPER_BONUS_INDEX].CategoryButton.configure(text=str(score_card.upper_section_bonus()))
+        self._frames[LOWER_BONUS_INDEX].CategoryButton.configure(text=str(score_card.lower_section_bonus()))
         self._frames[TOTAL_INDEX].CategoryButton.configure(text=str(score_card.total_score()))
 
 

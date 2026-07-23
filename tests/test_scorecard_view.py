@@ -65,9 +65,31 @@ class ScorecardViewTest(unittest.TestCase):
         self.assertEqual(self.frames[6].CategoryButton["text"], "0")
         self.assertEqual(self.frames[15].CategoryButton["text"], "3")
 
+    def test_render_shows_lower_section_bonus(self) -> None:
+        self.score_card.add_extra_kniffel_bonus()
+        self.view.render(self.score_card)
+        self.assertEqual(self.frames[14].CategoryButton["text"], "50")
+
+    def test_render_shows_grayed_preview_for_open_categories(self) -> None:
+        self.view.render(self.score_card, dice_values=[6, 6, 6, 2, 2])
+        sechser_frame = self.frames[5]
+        self.assertEqual(sechser_frame.CategoryButton["text"], "18")
+        self.assertEqual(sechser_frame.CategoryButton["fg"], "#9aa0a6")
+        self.assertEqual(str(sechser_frame.CategoryButton["state"]), "normal")
+
+    def test_render_without_dice_values_leaves_open_categories_blank(self) -> None:
+        self.view.render(self.score_card)
+        self.assertEqual(self.frames[5].CategoryButton["text"], "")
+
     def test_button_click_reports_matching_category(self) -> None:
         self.frames[7].CategoryButton.invoke()
         self.assertEqual(self.chosen, [self.dreierpasch])
+
+    def test_render_disables_button_for_already_filled_category(self) -> None:
+        self.score_card.set_score(self.dreierpasch, 9)
+        self.view.render(self.score_card)
+        self.frames[7].CategoryButton.invoke()
+        self.assertEqual(self.chosen, [])
 
     def test_disabled_view_ignores_button_clicks(self) -> None:
         self.view.set_enabled(False)

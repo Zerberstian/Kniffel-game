@@ -7,6 +7,7 @@ from .category import NumberCategory, ScoreCategory
 
 UPPER_SECTION_BONUS_THRESHOLD = 63
 UPPER_SECTION_BONUS = 35
+EXTRA_KNIFFEL_BONUS = 50
 
 
 class ScoreCard:
@@ -14,6 +15,7 @@ class ScoreCard:
 
     def __init__(self, categories: List[ScoreCategory]) -> None:
         self._entries: Dict[ScoreCategory, Optional[int]] = {category: None for category in categories}
+        self._extra_kniffel_bonus_count = 0
 
     def set_score(self, category: ScoreCategory, value: int) -> None:
         if category not in self._entries:
@@ -36,6 +38,12 @@ class ScoreCard:
         )
         return UPPER_SECTION_BONUS if upper_sum >= UPPER_SECTION_BONUS_THRESHOLD else 0
 
+    def add_extra_kniffel_bonus(self) -> None:
+        self._extra_kniffel_bonus_count += 1
+
+    def lower_section_bonus(self) -> int:
+        return self._extra_kniffel_bonus_count * EXTRA_KNIFFEL_BONUS
+
     def total_score(self) -> int:
         entered = sum(value for value in self._entries.values() if value is not None)
-        return entered + self.upper_section_bonus()
+        return entered + self.upper_section_bonus() + self.lower_section_bonus()

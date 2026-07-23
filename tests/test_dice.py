@@ -44,6 +44,14 @@ class DiceTest(unittest.TestCase):
         self.assertTrue(held_after_hold)
         self.assertFalse(die.held)
 
+    def test_release_also_unlocks(self) -> None:
+        die = Dice(0)
+        die.hold()
+        die.lock()
+        die.release()
+        self.assertFalse(die.held)
+        self.assertFalse(die.locked)
+
 
 class DiceCupTest(unittest.TestCase):
     def test_initial_values(self) -> None:
@@ -65,6 +73,25 @@ class DiceCupTest(unittest.TestCase):
             held_value, cup.values(),
         )
         self.assertEqual(held_die.value, held_value)
+
+    def test_roll_unheld_locks_currently_held_dice(self) -> None:
+        cup = DiceCup()
+        cup.roll_all()
+        held_die = cup._dice[0]
+        held_die.hold()
+        self.assertFalse(held_die.locked)
+        cup.roll_unheld()
+        logger.info("Würfel[0] gehalten & jetzt gewürfelt -> gesperrt=%s", held_die.locked)
+        self.assertTrue(held_die.locked)
+
+    def test_reset_unlocks_dice(self) -> None:
+        cup = DiceCup()
+        cup.roll_all()
+        cup._dice[0].hold()
+        cup.roll_unheld()
+        self.assertTrue(cup._dice[0].locked)
+        cup.reset()
+        self.assertFalse(cup._dice[0].locked)
 
     def test_roll_limit(self) -> None:
         cup = DiceCup()

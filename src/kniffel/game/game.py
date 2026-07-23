@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import List
 
-from .category import ScoreCategory
+from .category import KNIFFEL_SCORE, Kniffel, ScoreCategory
 from .dice import Dice, DiceCup, ROLLS_PER_TURN
 from .player import Player
 
@@ -20,8 +20,18 @@ class Game:
     def current_player(self) -> Player:
         return self._players[self._current_player_index]
 
+    @property
+    def current_player_index(self) -> int:
+        return self._current_player_index
+
     def dice(self) -> List[Dice]:
         return self._dice_cup.dice
+
+    def dice_values(self) -> List[int]:
+        return self._dice_cup.values()
+
+    def rolls_left(self) -> int:
+        return self._dice_cup.rolls_left
 
     def roll_dice(self) -> None:
         if self._dice_cup.rolls_left == ROLLS_PER_TURN:
@@ -30,8 +40,21 @@ class Game:
             self._dice_cup.roll_unheld()
 
     def choose_category(self, category: ScoreCategory) -> None:
-        score = category.calculate_score(self._dice_cup.values())
-        self.current_player().score_card.set_score(category, score)
+        dice_values = self._dice_cup.values()
+        score = category.calculate_score(dice_values)
+        score_card = self.current_player().score_card
+
+        kniffel_category = next((c for c in self._categories if isinstance(c, Kniffel)), None)
+        if (
+            kniffel_category is not None
+            and category is not kniffel_category
+            and score_card.is_filled(kniffel_category)
+            and score_card.score(kniffel_category) == KNIFFEL_SCORE
+            and kniffel_category.calculate_score(dice_values) == KNIFFEL_SCORE
+        ):
+            score_card.add_extra_kniffel_bonus()
+
+        score_card.set_score(category, score)
         self.next_turn()
 
     def next_turn(self) -> None:

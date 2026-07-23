@@ -76,5 +76,25 @@ class UpperSectionBonusTest(unittest.TestCase):
         self.assertEqual(card.upper_section_bonus(), 0)
 
 
+class ExtraKniffelBonusTest(unittest.TestCase):
+    def test_no_bonus_without_extra_kniffel(self) -> None:
+        card = ScoreCard([Chance("Chance")])
+        self.assertEqual(card.lower_section_bonus(), 0)
+
+    def test_each_extra_kniffel_adds_fifty(self) -> None:
+        card = ScoreCard([Chance("Chance")])
+        card.add_extra_kniffel_bonus()
+        card.add_extra_kniffel_bonus()
+        logger.info("Zwei Zusatz-Kniffel -> Bonus Unten=%d", card.lower_section_bonus())
+        self.assertEqual(card.lower_section_bonus(), 100)
+
+    def test_total_score_includes_lower_section_bonus(self) -> None:
+        chance = Chance("Chance")
+        card = ScoreCard([chance])
+        card.set_score(chance, 20)
+        card.add_extra_kniffel_bonus()
+        self.assertEqual(card.total_score(), 70)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
