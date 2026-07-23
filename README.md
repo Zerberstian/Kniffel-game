@@ -20,7 +20,7 @@ Kniffel-game/
 ├── src/
 │   └── kniffel/
 │       ├── __init__.py
-│       ├── __main__.py             Entrypoint: python -m kniffel Ausführung
+│       ├── __main__.py             
 │       ├── game/                   Spiellogik – keine GUI, rein objektorientiert
 │       │   ├── dice.py             Dice, DiceCup
 │       │   ├── category.py         ScoreCategory-Hierarchie (eine Klasse je Kniffel-Kategorie)
@@ -60,6 +60,12 @@ laufen mit:
 
 ```bash
 pytest tests
+```
+## App-Start
+die App kann in `~\Kniffel-game` mittels folgendem Command ausgeführt werden:
+
+```bash
+.venv\Scripts\python.exe -m kniffel.gui.app
 ```
 
 ## Dokumentation
